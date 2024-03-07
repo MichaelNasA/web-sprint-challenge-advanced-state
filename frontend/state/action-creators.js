@@ -1,21 +1,41 @@
 // ❗ You don't need to add extra action creators to achieve MVP
-export function moveClockwise() { }
+import axios from "axios";
+import * as types from './action-types'
 
-export function moveCounterClockwise() { }
+export function moveClockwise() {
+  return {type: types.MOVE_CLOCKWISE}
+ }
 
-export function selectAnswer() { }
+export function moveCounterClockwise() {
+  return {type: types.MOVE_COUNTERCLOCKWISE}
+ }
 
-export function setMessage() { }
+export function selectAnswer(answer) {
+  return {type: types.SET_SELECTED_ANSWER, payload:answer}
+ }
 
-export function setQuiz() { }
+export function setMessage(message) {
+  return {type: types.SET_INFO_MESSAGE, payload:message}
+ }
 
-export function inputChange() { }
+export function setQuiz(quiz) {
+  return {type: types.SET_QUIZ_INTO_STATE, payload:quiz}
+ }
 
-export function resetForm() { }
+export function inputChange(inputName, input, value) {
+  return {
+    type: types.INPUT_CHANGE, payload: { name: input, value: value }
+  }
+}
+
+export function resetForm() {
+  return {type: types.RESET_FORM}
+ }
 
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
+    dispatch 
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
