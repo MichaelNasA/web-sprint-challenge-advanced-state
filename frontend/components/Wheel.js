@@ -21,8 +21,11 @@
 // }
 
 import React from 'react';
+import {connect} from 'react-redux'
+import * as actions from '../state/action-creators'
 
-export default function Wheel(props) {
+function Wheel(props) {
+  console.log(props)
   const numberOfCogs = 6; // Define the number of cogs you want
 
   // Create an array of numbers from 0 to numberOfCogs - 1
@@ -32,16 +35,17 @@ export default function Wheel(props) {
     <div id="wrapper">
       <div id="wheel">
         {cogs.map((index) => (
-          <div key={index} className={`cog${index === 0 ? ' active' : ''}`} style={{ '--i': index }}>
+          <div key={index} className={`cog${index === props.wheel.position ? ' active' : ''}`} style={{ '--i': index }}>
             B
           </div>
         ))}
       </div>
       <div id="keypad">
-        <button id="counterClockwiseBtn">Counter clockwise</button>
-        <button id="clockwiseBtn">Clockwise</button>
+        <button onClick = {props.moveCounterClockwise}id="counterClockwiseBtn">Counter clockwise</button>
+        <button onClick = {props.moveClockwise} id="clockwiseBtn">Clockwise</button>
       </div>
     </div>
   );
 }
+export default connect (state => state, actions )(Wheel) // can be map state to props
 
