@@ -36,7 +36,7 @@ function Wheel(props) {
       <div id="wheel">
         {cogs.map((index) => (
           <div key={index} className={`cog${index === props.wheel.position ? ' active' : ''}`} style={{ '--i': index }}>
-            B
+            {index === props.wheel.position ? 'B' : null}
           </div>
         ))}
       </div>
