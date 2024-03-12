@@ -1,14 +1,21 @@
-import React from 'react'
+import React,{useEffect}from 'react'
 import {connect} from 'react-redux'
-import * as actions from '../state/action-creators'
+import {fetchQuiz,postQuiz,postAnswer,setQuiz} from '../state/action-creators'
 
-export default function Quiz(props){
-  
+function Quiz(props){
+  //console.log(props);
+
+useEffect (() => {
+  props.fetchQuiz()
+},[]) // use effect runs all the time. I only want to run 1 time, or the app will run till it crash. WE DON'T NEED THAT !!!!
+ 
+  // make quiz not null
+  // figure out to over write null in your reducer
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        quiz ? (
+        props.quiz ? (
           <>
             <h2>What is a closure?</h2>
 
@@ -28,10 +35,27 @@ export default function Quiz(props){
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button onClick = {props.selectAnswer} id="submitAnswerBtn">Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
     </div>
   )
 }
+
+
+
+const mapStateToProps = (state) => {
+  //console.log(state)
+  return {
+    quiz : state.quiz,
+    selectedAnswer : state.selectedAnswer,
+    fetchQuiz : state.fetchQuiz,
+    postAnswer : state.postAnswer,
+    postQuiz : state.postQuiz
+  }
+}
+
+export default connect(mapStateToProps, { fetchQuiz, postQuiz, postAnswer, setQuiz })(Quiz);
+
+
