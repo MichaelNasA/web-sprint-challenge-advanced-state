@@ -35,16 +35,16 @@ export function resetForm() {
 // ❗ Async action creators
 export const fetchQuiz = () => (dispatch) =>  {
   
-    console.log("inside dispatch")
+    //console.log("inside dispatch")
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     dispatch(setQuiz(null));
 
     // Perform the GET request
     axios.get(`http://localhost:9000/api/quiz/next`)
       .then(response => {
-        console.log(response)
+        //console.log(response)
         // On successful GET, dispatch an action to send the obtained quiz to its state
-        dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: response.data });
+        dispatch(setQuiz(response.data));
       })
       .catch(error => {
         // On error, log the error or handle it appropriately
@@ -53,10 +53,10 @@ export const fetchQuiz = () => (dispatch) =>  {
 } 
   
 
-export function postAnswer(answer) {
+export function postAnswer({quiz_id, answer_id}) {
   return function(dispatch) {
     // Perform the POST request
-    axios.post('http://localhost:9000/api/quiz/answer', { answer })
+    axios.post('http://localhost:9000/api/quiz/answer', { quiz_id, answer_id })
       .then(response => {
         // On successful POST, dispatch actions as necessary
         dispatch({ type: types.SET_SELECTED_ANSWER, payload: null }); // Reset selected answer

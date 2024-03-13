@@ -1,41 +1,44 @@
 import React,{useEffect}from 'react'
 import {connect} from 'react-redux'
-import {fetchQuiz,postQuiz,postAnswer,setQuiz} from '../state/action-creators'
+import {fetchQuiz,postQuiz,postAnswer,setQuiz, selectAnswer} from '../state/action-creators'
 
 function Quiz(props){
+  const {
+    fetchQuiz,
+    selectAnswer,
+    selectedAnswer,
+    postAnswer,
+    quiz,
+  } = props
   //console.log(props);
 
 useEffect (() => {
-  props.fetchQuiz()
+  !quiz && fetchQuiz()
 },[]) // use effect runs all the time. I only want to run 1 time, or the app will run till it crash. WE DON'T NEED THAT !!!!
  
-  // make quiz not null
-  // figure out to over write null in your reducer
   return (
     <div id="wrapper">
       {
-        // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        props.quiz ? (
+        quiz ? (
           <>
-            <h2>What is a closure?</h2>
+            <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
-                A function
+              <div className={`answer${selectedAnswer === quiz.answers[0].answer_id ? ' selected' : ''}`} onClick={() => selectAnswer(quiz.answers[0].answer_id)}>
+                {quiz.answers[0].text}
                 <button>
-                  SELECTED
+                  {selectedAnswer === quiz.answers[0].answer_id ? 'SELECTED' : 'Select'}
                 </button>
               </div>
-
-              <div className="answer">
-                An elephant
+                <div className={`answer${selectedAnswer === quiz.answers[1].answer_id ? ' selected' : ''}`} onClick={() => selectAnswer(quiz.answers[1].answer_id)}>
+                {quiz.answers[1].text}
                 <button>
-                  Select
+                  {selectedAnswer === quiz.answers[1].answer_id ? 'SELECTED' : 'Select'}
                 </button>
               </div>
             </div>
 
-            <button onClick = {props.selectAnswer} id="submitAnswerBtn">Submit answer</button>
+            <button id="submitAnswerBtn" disabled={!selectedAnswer} onClick={() => postAnswer({ quiz_id: quiz.quiz_id, answer_id: selectedAnswer })}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -56,6 +59,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { fetchQuiz, postQuiz, postAnswer, setQuiz })(Quiz);
+export default connect(mapStateToProps, { fetchQuiz, postQuiz, postAnswer, setQuiz, selectAnswer })(Quiz);
 
 
