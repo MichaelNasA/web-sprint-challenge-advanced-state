@@ -42,4 +42,4 @@ export function Form(props) {
   )
 }
 
-export default connect(st => st, actionCreators)(Form)
+export default connect(st => st, { addNewQuiz: actionCreators.addNewQuiz })(Form);
