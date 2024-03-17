@@ -22,9 +22,9 @@ export function setQuiz(quiz) {
   return {type: types.SET_QUIZ_INTO_STATE, payload:quiz}
  }
 
-export function inputChange(input, value) {
+export function inputChange(form) {
   return {
-    type: types.INPUT_CHANGE, payload: { name: input, value: value }
+    type: types.INPUT_CHANGE, payload: form
   }
 }
 

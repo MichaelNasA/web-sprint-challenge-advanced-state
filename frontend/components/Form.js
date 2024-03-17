@@ -1,35 +1,23 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
+  console.log(props)
 
-  const [formData, setFormData] = useState({
-    newQuestion: '',
-    newTrueAnswer: '',
-    newFalseAnswer: ''
-  });
+  const {postQuiz, inputChange, form} = props 
   
   const onChange = evt => {
     const { id, value } = evt.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [id]: value
-    }));
+    inputChange({...form, [id]:value})
   }
 
   const onSubmit = evt => {
     evt.preventDefault(); // Prevent the default form submission behavior
   
     // Dispatch an action to add a new quiz
-    props.addNewQuiz(formData);
+    postQuiz(form)
   
-    // Clear the form after submission
-    setFormData({
-      newQuestion: '',
-      newTrueAnswer: '',
-      newFalseAnswer: ''
-    });
   }
   return (
     <form id="form" onSubmit={onSubmit}>
